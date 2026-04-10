@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="panel" style="max-width: 480px; margin: 40px auto;">
+    <h2>Login</h2>
+    <form method="POST" action="{{ url_for('login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="email" name="email" placeholder="Email" aria-label="Email" required>
+        <input type="password" name="password" placeholder="Password" aria-label="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <hr style="border: 0; border-top: 1px solid #d7e4d9; margin: 20px 0;">
+
+    <form method="POST" action="{{ url_for('send_login_email') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="email" name="email" placeholder="Send login email to..." aria-label="Email for login email" required>
+        <button type="submit">Send Login Email</button>
+    </form>
+</div>
+{% endblock %}

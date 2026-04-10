@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Complaint Ticket System{% endblock %}</title>
+    <style>
+        :root {
+            --bg: #f4f7f2;
+            --bg-soft: #e8f0e2;
+            --panel: #ffffff;
+            --ink: #143226;
+            --muted: #4a6657;
+            --brand: #1f7a4c;
+            --brand-strong: #135e38;
+            --danger: #b42318;
+            --warning: #b54708;
+            --success: #067647;
+            --line: #d7e4d9;
+            --shadow: 0 12px 28px rgba(20, 50, 38, 0.1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% -10%, #dbe9d8 0, transparent 35%),
+                radial-gradient(circle at 90% 0%, #d4e5d8 0, transparent 32%),
+                linear-gradient(160deg, var(--bg), #edf4ea 45%, #eef7ed 100%);
+            min-height: 100vh;
+        }
+
+        .layout {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+            padding: 16px 18px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(3px);
+        }
+
+        .brand {
+            margin: 0;
+            font-size: 1.1rem;
+            letter-spacing: 0.2px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        a {
+            color: var(--brand-strong);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+            color: #163f2c;
+        }
+
+        p, td, th, input, select, textarea, button {
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            border: 1px solid #bfd3c5;
+            border-radius: 10px;
+            padding: 11px;
+            margin-top: 8px;
+            background: #fcfffb;
+            color: var(--ink);
+        }
+
+        button {
+            border: 0;
+            border-radius: 10px;
+            padding: 11px 14px;
+            cursor: pointer;
+            background: var(--brand);
+            color: #fff;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: var(--brand-strong);
+        }
+
+        .flash {
+            border-radius: 10px;
+            padding: 11px;
+            margin-bottom: 10px;
+            border: 1px solid var(--line);
+            background: #edf8f0;
+        }
+
+        .flash-success {
+            border-color: #88d4aa;
+            background: #eafaf0;
+            color: var(--success);
+        }
+
+        .flash-danger {
+            border-color: #f3b2ac;
+            background: #fff1f0;
+            color: var(--danger);
+        }
+
+        .flash-warning {
+            border-color: #f5d2a3;
+            background: #fff6eb;
+            color: var(--warning);
+        }
+
+        .flash-info {
+            border-color: #c9e2ce;
+            background: #f2faf4;
+            color: var(--muted);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--line);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 11px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--bg-soft);
+        }
+
+        @media (max-width: 760px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .layout {
+                padding: 14px;
+            }
+
+            .panel {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <header class="topbar">
+            <h1 class="brand">Complaint Ticket System</h1>
+            {% if session.get('user_id') %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

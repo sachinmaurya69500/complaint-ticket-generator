@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Agent Dashboard{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <h2>All Tickets</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Update Status</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.title }}</td>
+                <td>{{ ticket.description }}</td>
+                <td>{{ ticket.priority }}</td>
+                <td>{{ ticket.status }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('update_ticket_status', ticket_id=ticket._id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <select name="status" required>
+                            <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>Open</option>
+                            <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Closed" {% if ticket.status == 'Closed' %}selected{% endif %}>Closed</option>
+                        </select>
+                        <button type="submit">Update Status</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_ticket', ticket_id=ticket._id) }}" onsubmit="return confirm('Delete this ticket?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" style="background: #b42318;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">No tickets found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
